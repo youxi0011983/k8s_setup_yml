@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3.12.6-management
+    container_name: rabbitmq_3_12
+    restart: always
+    hostname: rabbitserver
+    environment:
+      RABBITMQ_DEFAULT_VHOST: admin_vhost
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: devops666
+      RABBITMQ_PLUGINS_DIR: '/plugins:/myplugins'
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./data:/var/lib/rabbitmq
+      - ./myplugins:/myplugins
+    networks:
+      - devopsnetwork
+
+networks:
+  devopsnetwork:
+    driver: bridge
