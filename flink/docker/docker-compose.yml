@@ -1,0 +1,29 @@
+version: '3'
+services:
+  jobmanager:
+    image: flink:latest
+    container_name: jobmanager
+    hostname: jobmanager
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - flink_network
+
+  taskmanager:
+    image: flink:latest
+    depends_on:
+      - jobmanager
+    ports:
+      - "8082-8084:8081"  # 确保端口范围足够
+    command: taskmanager
+    scale: 3  # 设置TaskManager的数量为3
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - flink_network
+networks: #注意这里，要跟services配置项目对齐（即平级的意思）
+  flink_network:
+    driver: bridge
