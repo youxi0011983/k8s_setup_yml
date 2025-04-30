@@ -13,6 +13,7 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+      - "15671:15671"
     volumes:
       - ./data:/var/lib/rabbitmq
       - ./myplugins:/myplugins
