@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  wyl:
+    container_name: wyl
+    image: aceberg/watchyourlan
+    environment:
+      - TZ=Asia/Shanghai
+      - GUIIP=192.168.3.166
+      - GUIPORT=8850
+      - IFACE=ens33
+      - THEME=darkly
+    network_mode: host
+    volumes:
+      - /data/watchyourlan/wyl:/data

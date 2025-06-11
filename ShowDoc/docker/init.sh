@@ -1,0 +1,1 @@
+docker run -d --name showdoc --user=root --privileged=true -p 4999:80 --restart always -v /data/showdoc/html:/var/www/html/ star7th/showdoc

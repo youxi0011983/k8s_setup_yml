@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  metacubexd:
+    container_name: metacubexd
+    image: ghcr.io/metacubex/metacubexd
+    restart: always
+    ports:
+      - '9097:80'
+
+  mihomo:
+    container_name: mihomo
+    image: docker.io/metacubex/mihomo:Latest
+    restart: always
+    pid: host
+    ipc: host
+    network_mode: host
+    cap_add:
+      - ALL
+    volumes:
+      - <config.yaml所在目录>:/root/.config/mihomo
+      - /dev/net/tun:/dev/net/tun

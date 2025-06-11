@@ -1,0 +1,12 @@
+version: '3.9'
+services:
+    watchyourports:
+        image: aceberg/watchyourports
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - '/data/watchyourports/data:/data/WatchYourPorts'
+        ports:
+            - '7600:8853'
+        container_name: wyp
+        restart: always

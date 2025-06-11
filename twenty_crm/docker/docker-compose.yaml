@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  twenty:
+    image: twentycrm/twenty-front:${TAG}
+    ports:
+      - 33001:3000 	   #自定义前台端口
+    environment:
+      - SIGN_IN_PREFILLED=${SIGN_IN_PREFILLED}
+      - REACT_APP_SERVER_BASE_URL=${LOCAL_SERVER_URL}
+      - REACT_APP_SERVER_AUTH_URL=${LOCAL_SERVER_URL}/auth
+      - REACT_APP_SERVER_FILES_URL=${LOCAL_SERVER_URL}/files
+    depends_on:
+      - backend
+  backend:
+    image: twentycrm/twenty-server:${TAG}
+    ports:
+      - 33002:3000		#自定义后台端口
+    environment:
+      - SIGN_IN_PREFILLED=${SIGN_IN_PREFILLED}
+      - PG_DATABASE_URL=${PG_DATABASE_URL}
+      - FRONT_BASE_URL=${FRONT_BASE_URL}
+      - PORT=3000
+      - STORAGE_TYPE=local
+      - STORAGE_LOCAL_PATH=.local-storage
+      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+      - LOGIN_TOKEN_SECRET=${LOGIN_TOKEN_SECRET}
+      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+      #- EMAIL_SMTP_HOST=smtp.gmail.com
+      #- EMAIL_SERVER_PORT=465
+      #- EMAIL_SERVER_USER=gmail_email_address
+      #- EMAIL_SERVER_PASSWORD='gmail_app_password'
+      #- EMAIL_FROM_ADDRESS=cgakki_mail@cgakki.top
+      #- EMAIL_FROM_NAME=cherry from cgakki.top
+
+    depends_on:
+      - db
+  db:
+    image: twentycrm/twenty-postgres:${TAG}
+    volumes:
+      - twenty-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD}
+volumes:
+  twenty-db-data:
