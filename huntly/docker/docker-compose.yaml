@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+    huntly:
+        image: lcomplete/huntly
+        volumes:
+            - ./data:/data
+        ports:
+            - "8870:80"
+            - "8873:443"
+        restart: always
+        container_name: huntly
+        networks:
+            - huntly_network
+networks:
+    huntly_network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.40.0.0/24

@@ -1,0 +1,33 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      DOMAIN: "https://vw.domain.tld"
+    volumes:
+      - ./vw-data/:/data/
+    ports:
+      - 5980:80
+    depends_on:
+      - nginx
+    networks:
+      - vaultwarden_network
+
+  nginx:
+    image: nginx:1.23-alpine
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.pem:/etc/nginx/nginx.pem
+      - ./nginx.key:/etc/nginx/nginx.key
+    restart: unless-stopped
+    networks:
+      - vaultwarden_network
+networks:
+    vaultwarden_network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.41.0.0/24

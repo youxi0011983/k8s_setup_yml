@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  umbrel:
+    image: dockurr/umbrel:latest
+    container_name: umbrel-OS
+    ports:
+      - "8111:80"
+    volumes:
+      - umbre_data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+volumes:
+  umbre_data:
+    driver: local

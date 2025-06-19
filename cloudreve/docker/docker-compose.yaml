@@ -1,0 +1,85 @@
+services:
+  pro:
+    image: cloudreve/cloudreve:latest
+    container_name: cloudreve-backend
+    depends_on:
+      - postgresql
+      - redis
+    restart: always
+    ports:
+      - 5212:5212
+      - 18443:443
+    environment:
+      - CR_CONF_Database.Type=postgres
+      - CR_CONF_Database.Host=postgresql
+      - CR_CONF_Database.User=cloudreve
+      - CR_CONF_Database.Name=cloudreve
+      - CR_CONF_Database.Port=5432
+      - CR_CONF_Redis.Server=redis:6379
+    volumes:
+      - backend_data:/cloudreve/data
+# 启动ssl的配置
+#      - ./onlyoffice.csr:/opt/onlyoffice.csr
+#      - ./onlyoffice.key:/opt/onlyoffice.key
+#      - ./conf.ini:/cloudreve/data/conf.ini:rw
+    networks:
+      - cloudreve_network
+
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql
+    environment:
+      - POSTGRES_USER=cloudreve
+      - POSTGRES_DB=cloudreve
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - database_postgres:/var/lib/postgresql/data
+    networks:
+      - cloudreve_network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - backend_data:/data
+#    command: chmod -R 777 /data
+    networks:
+      - cloudreve_network
+
+  nginx:
+    image: nginx:1.23-alpine
+    ports:
+      - "8443:443"
+      - "8083:8083"
+      - "8082:8082"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx.pem:/etc/nginx/nginx.pem
+      - ./nginx.pem:/etc/nginx/onlyoffice.pem
+      - ./nginx.key:/etc/nginx/nginx.key
+      - ./nginx.key:/etc/nginx/onlyoffice.key
+    restart: unless-stopped
+    networks:
+      - cloudreve_network
+
+  document_server:
+    image: onlyoffice/documentserver
+    environment:
+      - WOPI_ENABLED=true
+    ports:
+      - '8080:80'
+    tty: true
+    stdin_open: true
+    networks:
+      - cloudreve_network
+
+volumes:
+  backend_data:
+  database_postgres:
+
+networks:
+    cloudreve_network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.42.0.0/24

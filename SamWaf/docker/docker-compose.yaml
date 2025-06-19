@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+    samwaf:
+        image: samwaf/samwaf
+        volumes:
+            - './ssl:/app/ssl'
+            - './logs:/app/logs'
+            - './data:/app/data'
+            - './conf:/app/conf'
+        ports:
+            - '443:443'
+            - '80:80'
+            - '26666:26666'
+        container_name: samwaf-instance

@@ -1,0 +1,63 @@
+version: '3.0'
+services:
+  kodcloud:
+    container_name: kodcloud
+    image: kodcloud/kodbox
+    restart: always
+    volumes:
+      - kodcloud_data:/var/www/html
+    ports:
+      - 1111:80
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - kodbox_network
+
+  mysql:
+    container_name: kodbox_mysql
+    image: mysql:8.0.29
+    restart: always
+    volumes:
+      - database_mysql:/var/lib/mysql
+    ports:
+      - 9004:3306
+    environment:
+      - "MYSQL_ROOT_PASSWORD=2002"
+    networks:
+      - kodbox_network
+
+  redis:
+    container_name: kodbox_redis
+    image: redis:5.0
+    restart: always
+    volumes:
+      - database_redis:/data
+    ports:
+      - 9005:6379
+    networks:
+      - kodbox_network
+
+  nginx:
+    image: nginx:1.23-alpine
+    ports:
+      - "6443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./csr/ssl.crt:/etc/nginx/nginx.pem
+      - ./csr/ssl.key:/etc/nginx/nginx.key
+    restart: unless-stopped
+    networks:
+      - cloudreve_network
+
+volumes:
+  database_redis:
+  database_mysql:
+  kodcloud_data:
+
+networks:
+    kodbox_network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.45.0.0/24
