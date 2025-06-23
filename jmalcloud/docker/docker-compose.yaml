@@ -1,0 +1,56 @@
+services:
+  mongo:
+    container_name: jmalcloud_mongodb
+    image: docker.1ms.run/library/mongo:4.4
+    environment:
+      TZ: "Asia/Shanghai"
+    volumes:
+      - ./data/mongodb/db:/data/db   # 这里的路径按需修改
+      - ./data/mongodb/backup:/dump  # 路径按需修改
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    command: --wiredTigerCacheSizeGB 0.5
+
+
+  jmalcloud:
+    container_name: jmalcloud_server
+    image: docker.1ms.run/jmal/jmalcloud:latest
+    environment:
+      MONGODB_URI: "mongodb://mongo:27017/jmalcloud"
+      TZ: "Asia/Shanghai"
+      JVM_OPTS: "-Xms256m -Xmx1024m"
+    volumes:
+      - ./share/Container/data/files:/jmalcloud/files/ # 路径按需修
+    restart: unless-stopped
+    ports:
+       - 7072:8088
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+
+  nginx:
+    container_name: jmalcloud_nginx
+    image: docker.1ms.run/jmal/jmalcloud-nginx:latest
+    ports:
+      - 7070:80    # 网盘端口 7070, 按需修改
+      - 7071:8089  # 博客端口 7071, 按需修改
+    environment:
+      TZ: "Asia/Shanghai"
+    links:
+      - jmalcloud
+      - office  # 如果不想使用在线office编辑功能，将这一行删除掉
+    restart: unless-stopped
+
+
+  office: # 不想使用office功能可以去掉这里一整块内容
+    container_name: jmalcloud_office
+    image: docker.1ms.run/onlyoffice/documentserver:8.0.1
+    environment:
+      TZ: "Asia/Shanghai"
+      JWT_SECRET: "happynew1er"# 要使用office功能的话，这个密码按需修改，并记一下，待会要用
+    restart: unless-stopped

@@ -6,6 +6,8 @@ services:
     restart: always
     volumes:
       - kodcloud_data:/var/www/html
+      - ./background/nginx.conf:/etc/nginx/nginx.conf
+      - ./background/docker-vars.ini:/usr/local/etc/php/conf.d/docker-vars.ini
     ports:
       - 1111:80
     depends_on:
@@ -44,11 +46,23 @@ services:
       - "6443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./csr/ssl.crt:/etc/nginx/nginx.pem
-      - ./csr/ssl.key:/etc/nginx/nginx.key
+      - ./csr/nginx.pem:/etc/nginx/nginx.pem
+      - ./csr/nginx.key:/etc/nginx/nginx.key
     restart: unless-stopped
     networks:
-      - cloudreve_network
+      - kodbox_network
+
+  onlyoffice:
+    image: kodcloud/kodoffice:7.4.1.1   # 可道云官方转存镜像
+    container_name: onlyoffice
+    restart: always
+    ports:
+      - "9006:80"  # 宿主机 8082 端口访问 OnlyOffice
+    stdin_open: true
+    environment:
+      - JWT_ENABLED=false  # 关闭 JWT 验证（必须关闭）
+    networks:
+      - kodbox_network
 
 volumes:
   database_redis:

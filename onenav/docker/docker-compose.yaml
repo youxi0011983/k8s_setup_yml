@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+    onenav:
+        image: helloz/onenav:latest
+        environment:
+            - PASSWORD=admin
+            - USER=admin
+        volumes:
+            - './data:/data/wwwroot/default/data'
+        ports:
+            - '8011:80'
+        restart: always
+        container_name: onenav

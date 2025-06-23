@@ -1,0 +1,95 @@
+services:
+  dolphinscheduler-master:
+    image: apache/dolphinscheduler-master:3.1.9
+    container_name: dolphinscheduler-master
+    environment:
+      - DATABASE=postgresql
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://docker_postgres:5432/dolphinscheduler
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - REGISTRY_ZOOKEEPER_CONNECT_STRING=docker_zk1:2181
+    volumes:
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-shared-local:/opt/soft
+    networks:
+      - pub-network
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:5679/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  dolphinscheduler-worker:
+    image: apache/dolphinscheduler-worker:3.1.9
+    container_name: dolphinscheduler-worker
+    environment:
+      - DATABASE=postgresql
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://docker_postgres:5432/dolphinscheduler
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - REGISTRY_ZOOKEEPER_CONNECT_STRING=docker_zk1:2181
+    volumes:
+      - dolphinscheduler-worker-data:/tmp/dolphinscheduler
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-shared-local:/opt/soft
+      - dolphinscheduler-resource-local:/dolphinscheduler
+    networks:
+      - pub-network
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:1235/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  dolphinscheduler-api:
+    image: apache/dolphinscheduler-api:3.1.9
+    container_name: dolphinscheduler-api
+    ports:
+      - "12345:12345"
+      - "25333:25333"
+    environment:
+      - DATABASE=postgresql
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://docker_postgres:5432/dolphinscheduler
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - REGISTRY_ZOOKEEPER_CONNECT_STRING=docker_zk1:2181
+    volumes:
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+      - dolphinscheduler-shared-local:/opt/soft
+      - dolphinscheduler-resource-local:/dolphinscheduler
+    networks:
+      - pub-network
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:12345/dolphinscheduler/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  dolphinscheduler-alert:
+    image: apache/dolphinscheduler-alert-server:3.1.9
+    container_name: dolphinscheduler-alert
+    environment:
+      - DATABASE=postgresql
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://docker_postgres:5432/dolphinscheduler
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - REGISTRY_ZOOKEEPER_CONNECT_STRING=docker_zk1:2181
+    volumes:
+      - dolphinscheduler-logs:/opt/dolphinscheduler/logs
+    networks:
+      - pub-network
+    healthcheck:
+      test: [ "CMD", "curl", "http://localhost:50053/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  dolphinscheduler-worker-data:
+  dolphinscheduler-logs:
+  dolphinscheduler-shared-local:
+  dolphinscheduler-resource-local:
+
+networks:  # 网络
+  pub-network:
+      external: true
