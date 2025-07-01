@@ -1,0 +1,73 @@
+version: '3.0'
+services:
+  kodcloud:
+    container_name: kodcloud
+    image: kodcloud/kodbox
+    restart: always
+    volumes:
+      - kodcloud_data:/var/www/html
+      - ./background/nginx.conf:/etc/nginx/nginx.conf
+      - ./background/docker-vars.ini:/usr/local/etc/php/conf.d/docker-vars.ini
+      - ./csr/nginx.pem:/etc/nginx/nginx.pem
+      - ./csr/nginx.key:/etc/nginx/nginx.key
+    ports:
+      - 6080:80
+      - 6443:443
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - kodbox_network
+
+  mysql:
+    container_name: kodbox_mysql
+    image: mysql:8.0.29
+    restart: always
+    volumes:
+      - database_mysql:/var/lib/mysql
+    ports:
+      - 9004:3306
+    environment:
+      - "MYSQL_ROOT_PASSWORD=2002"
+    networks:
+      - kodbox_network
+
+  redis:
+    container_name: kodbox_redis
+    image: redis:5.0
+    restart: always
+    volumes:
+      - database_redis:/data
+    ports:
+      - 9005:6379
+    networks:
+      - kodbox_network
+
+
+  onlyoffice:
+    image: kodcloud/kodoffice:7.4.1.1
+    container_name: onlyoffice
+    restart: always
+    ports:
+      - "9006:80"
+      - "9012:443"
+    stdin_open: true
+    volumes:
+      - ./DocumentServer/data:/var/www/onlyoffice/Data
+    environment:
+      - JWT_ENABLED=false
+    networks:
+      - kodbox_network
+
+
+volumes:
+  database_redis:
+  database_mysql:
+  kodcloud_data:
+
+networks:
+    kodbox_network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.45.0.0/24
