@@ -28,7 +28,7 @@ services:
     ports:
       - 9004:3306
     environment:
-      - "MYSQL_ROOT_PASSWORD=2002"
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     networks:
       - kodbox_network
 
@@ -54,6 +54,7 @@ services:
     stdin_open: true
     volumes:
       - ./DocumentServer/data:/var/www/onlyoffice/Data
+      - ./background/default.json:/etc/onlyoffice/documentserver/default.json
     environment:
       - JWT_ENABLED=false
     networks:
