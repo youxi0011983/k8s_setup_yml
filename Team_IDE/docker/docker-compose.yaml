@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+   teamide:
+        image: teamide/teamide-server:latest
+        volumes:
+            - './data/teamaide/data:/opt/teamide/data'
+        ports:
+            - '21080:21080'
+        container_name: teamide
+        restart: always

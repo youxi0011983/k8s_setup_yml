@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  neko:
+    image: m1k1o/neko:latest
+    container_name: neko
+    restart: unless-stopped
+    shm_size: 2gb
+    ports:
+      - "4181:8080"
+      - "52000-52100:52000-52100/udp"
+    environment:
+      NEKO_SCREEN: 1920x1080@30
+      NEKO_PASSWORD: "user123"  # 普通用户密码
+      NEKO_PASSWORD_ADMIN: "admin456"  # 管理员密码
+      NEKO_NAT1TO1: 192.168.1.100  # 改为你的内网IP
+      NEKO_EPR: 52000-52100
+      NEKO_ICELITE: 1

@@ -1,4 +1,3 @@
-# https://docs.waf-ce.chaitin.cn/zh/home
 networks:
   safeline-ce:
     name: safeline-ce
@@ -39,6 +38,8 @@ services:
       - ${SAFELINE_DIR}/resources/sock:/app/sock
       - /var/run:/app/run
     ports:
+      - 7443:443
+      - 7080:80
       - ${MGT_PORT:-9443}:1443
     healthcheck:
       test: curl -k -f https://localhost:1443/api/open/health
@@ -89,7 +90,14 @@ services:
       - CHAOS_ADDR=${SUBNET_PREFIX}.10
     ulimits:
       nofile: 131072
-    network_mode: host
+#    network_mode: host
+    ports:
+      - 5443:443
+      - 5442:5442
+      - 5080:80
+    networks:
+      safeline-ce:
+        ipv4_address: ${SUBNET_PREFIX}.15
   luigi:
     container_name: safeline-luigi
     restart: always
@@ -100,6 +108,9 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${SAFELINE_DIR}/resources/luigi:/app/data
+    ports:
+      - 6443:443
+      - 6080:80
     logging:
       driver: "json-file"
       options:
@@ -141,4 +152,4 @@ services:
       - ${SAFELINE_DIR}/resources/chaos:/app/chaos
     networks:
       safeline-ce:
-        ipv4_address: ${SUBNET_PREFIX}.10%
+        ipv4_address: ${SUBNET_PREFIX}.10

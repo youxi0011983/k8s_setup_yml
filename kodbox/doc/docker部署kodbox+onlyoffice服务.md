@@ -110,8 +110,8 @@ touch docker-vars.ini
 # docker-vars.ini文件内容
 cat > docker-vars.ini <<EOF
 cgi.fix_pathinfo=1
-upload_max_filesize = 512M
-post_max_size = 512M
+upload_max_filesize = 10240M
+post_max_size = 10240M
 memory_limit = 2048M
 max_execution_time = 3600
 max_input_time = 3600
@@ -282,12 +282,6 @@ EOF
 ### 1.5、生成default.json文件
 
 ```bash
-#新建default.json文件
-cd background
-touch default.json
-
-# default.json文件内容
-cat > default.json <<EOF
 {
   "statsd": {
     "useMetrics": false,
@@ -686,7 +680,9 @@ cat > default.json <<EOF
   },
   "FileConverter": {
     "converter": {
-      "maxDownloadBytes": 104857600,
+      "maxDownloadBytes": 524288000,
+      "maxRequestSize": 524288000,
+      "maxFileSize": 524288000,
       "downloadTimeout": {
         "connectionAndInactivity": "10m",
         "wholeCycle": "10m"
@@ -707,21 +703,21 @@ cat > default.json <<EOF
         {
           "type": "docx;dotx;docm;dotm",
           "zip": {
-            "uncompressed": "500MB",
+            "uncompressed": "524288000",
             "template": "*.xml"
           }
         },
         {
           "type": "xlsx;xltx;xlsm;xltm",
           "zip": {
-            "uncompressed": "500MB",
+            "uncompressed": "524288000",
             "template": "*.xml"
           }
         },
         {
           "type": "pptx;ppsx;potx;pptm;ppsm;potm",
           "zip": {
-            "uncompressed": "500MB",
+            "uncompressed": "524288000",
             "template": "*.xml"
           }
         }
@@ -730,7 +726,6 @@ cat > default.json <<EOF
     }
   }
 }
-EOF
 ```
 
 

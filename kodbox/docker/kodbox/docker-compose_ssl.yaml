@@ -45,7 +45,7 @@ services:
 
 
   onlyoffice:
-    image: kodcloud/kodoffice:7.4.1.1
+    image: onlyoffice/documentserver:9.0
     container_name: onlyoffice
     restart: always
     ports:
@@ -57,6 +57,7 @@ services:
       - ./background/default.json:/etc/onlyoffice/documentserver/default.json
     environment:
       - JWT_ENABLED=false
+      - USE_UNAUTHORIZED_STORAGE=true
     networks:
       - kodbox_network
 

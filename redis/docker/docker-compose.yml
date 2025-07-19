@@ -12,3 +12,9 @@ services:
       - ./logs:/logs
     #配置文件启动
     command: redis-server /usr/local/etc/redis/redis.conf
+  redisinsight:
+    image: redislabs/redisinsight:1.7.0
+    container_name: redisinsight
+    restart: always
+    ports:
+      - 38001:8001
