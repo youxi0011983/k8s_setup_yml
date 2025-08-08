@@ -6,3 +6,7 @@ SessionSecret = iiIdaJt1pNoTiCDkK5DALXztD4YZeRV3NeqkVI0WsFCsJyowGoWh0A8BFTKWAfl3
 HashIDSalt = {HashIDSalt}
 
 
+[SSL]
+Listen = :443
+CertPath = /opt/onlyoffice.csr
+KeyPath = /opt/onlyoffice.key
