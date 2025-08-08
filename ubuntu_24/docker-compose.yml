@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  ubuntu:
+    image: ubuntu:24.04
+    container_name: ubuntu
+    command: bash -c 'sleep infinity'
+    ports:
+      - "5022:22"
+      - "5099:9000"
+      - "5088:5000"
+      - "5080:8080"
+    networks:
+      - ubuntu-network
+    restart: always
+
+networks:
+  ubuntu-network:
+    name: ubuntu-network-1

@@ -1,0 +1,9 @@
+services:  
+  onlyoffice_server:
+    image: onlyoffice/documentserver
+    environment:
+      - WOPI_ENABLED=true
+      - JWT_ENABLED=false
+    ports:
+      - '9007:80'
+    tty: true

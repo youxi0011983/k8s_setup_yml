@@ -1,0 +1,37 @@
+version: '3.3'
+services:
+  guacd:
+    image: registry.cn-beijing.aliyuncs.com/dushixiang/guacd:1.5.4
+    volumes:
+      - ./data:/usr/local/next-terminal/data
+    restart:
+      always
+  mysql:
+    image: mysql:8.3
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: next-terminal
+      MYSQL_USER: next-terminal
+      MYSQL_PASSWORD: next-terminal
+      MYSQL_ROOT_PASSWORD: next-terminal
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    restart:
+      always
+  next-terminal:
+    image: registry.cn-beijing.aliyuncs.com/dushixiang/next-terminal-premium:latest
+    ports:
+      - "8088:8088"
+      - "8099:8099"
+      - "2022:2022"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./data:/usr/local/next-terminal/data
+      - ./config.yaml:/etc/next-terminal/config.yaml
+    depends_on:
+      - mysql
+      - guacd
+    restart:
+      always

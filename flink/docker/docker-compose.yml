@@ -6,12 +6,15 @@ services:
     hostname: jobmanager
     ports:
       - "8081:8081"
+      - "8022:22"
+      - "5000:5000"
+      - "9090:9090"
     command: jobmanager
     environment:
       - JOB_MANAGER_RPC_ADDRESS=jobmanager
     networks:
       - flink_network
-
+ 
   taskmanager:
     image: flink:latest
     depends_on:

@@ -1,0 +1,13 @@
+custom_server_name: 764f76ad5079
+export_download: false
+local_port: 26666
+notice:
+    isenable: false
+security:
+    ip_whitelist: 0.0.0.0/0,::/0
+soft_id: SamWafCom
+user_code: RAD921a9292-d3e6-4098-ad87-ccf23473db21
+zlog:
+    db_debug_enable: false
+    debug_enable: false
+    outputformat: console

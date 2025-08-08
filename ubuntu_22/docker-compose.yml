@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  ubuntu_22:
+    image: ubuntu:22.04
+    container_name: ubuntu_22
+    command: bash -c 'sleep infinity'
+    ports:
+      - "6022:22"
+      - "6099:9000"
+      - "6088:5000"
+      - "6080:8080"
+      - "6443:443"
+      - "8379:8379"
+    networks:
+      - ubuntu_22-network
+    restart: always
+
+networks:
+  ubuntu_22-network:
+    name: ubuntu_22-network-1

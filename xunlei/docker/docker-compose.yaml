@@ -10,11 +10,11 @@ services:
       - ./volume/data:/xunlei/data        # 配置目录
       - ./volume/media:/xunlei/downloads  # 下载目录
     environment:
-      XL_DASHBOARD_USERNAME: "用户名"     # 替换为你的用户名
-      XL_DASHBOARD_PASSWORD: "密码"       # 替换为你的密码
+      XL_DASHBOARD_USERNAME: "admin"     # 替换为你的用户名
+      XL_DASHBOARD_PASSWORD: "1q@W3e4r5t"       # 替换为你的密码
     restart: always
     privileged: true
     logging:
       driver: "json-file"
       options:
-        max-size: "1m"
+        max-size: "100m"

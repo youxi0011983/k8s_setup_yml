@@ -22,7 +22,7 @@ server:
 app:
   rpc:
     addr: 0.0.0.0:8099
-    tls:
+    tls: 
       enabled: true
       cert: ""
       key: ""

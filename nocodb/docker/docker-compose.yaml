@@ -3,7 +3,7 @@ services:
     nocodb:
         image: 'nocodb/nocodb:latest'
         ports:
-            - '8080:8080'
+            - '7080:8080'
         volumes:
             - './nocodb:/usr/app/data/'
         container_name: noco

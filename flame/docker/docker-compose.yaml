@@ -1,0 +1,10 @@
+version: "3"
+services:
+  flame:
+    image: pawelmalak/flame
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./flame:/app/data
+    environment:
+      - PASSWORD=password

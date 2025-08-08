@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+    openwrt:
+        command: /sbin/init
+          #        image: 'registry.cn-shanghai.aliyuncs.com/suling/openwrt:x86_64'
+        image: nonnichen/nonniwrt:latest
+        privileged: true
+        ports:
+            - '8880:80'
+            - '7890:7890'
+            - '7891:7891'
+            - '7892:7892'
+            - '9090:9090'
+        container_name: openwrt_docker_compose
+        restart: always
+          #        network_mode: bridge
+        networks:
+          openwrt_network:
+            ipv4_address: 172.69.0.3
+        volumes:
+            - ./config/network:/etc/config/network
+            - ./config/uhttpd:/etc/config/uhttpd
+networks:
+    openwrt_network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.69.0.0/24

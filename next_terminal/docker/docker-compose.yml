@@ -21,7 +21,7 @@ services:
     image: registry.cn-beijing.aliyuncs.com/dushixiang/next-terminal:latest
     environment:
       DB: mysql
-      MYSQL_HOSTNAME: 192.168.80.8	# 你的 IP 地址
+      MYSQL_HOSTNAME: 192.168.0.126	# 你的 IP 地址
       MYSQL_PORT: 3306
       MYSQL_USERNAME: next-terminal
       MYSQL_PASSWORD: next-terminal
@@ -33,6 +33,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime
       - ./data:/usr/local/next-terminal/data
+      - ./config.yaml:/etc/next-terminal/config.yaml
     depends_on:
       - mysql
     restart:

@@ -1,0 +1,21 @@
+version: "3"
+services:
+  qbittorrent:
+    image: linuxserver/qbittorrent:4.6.7-libtorrentv1
+    container_name: qbittorrent
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai 
+      - UMASK_SET=022
+      - WEBUI_PORT=8085  # Web UI端口
+      - TORRENTING_PORT=26881 # 监听端口，默认6881，修改为20000-65535区间值，下同
+    volumes:
+      - ./config:/config  # 冒号左侧修改参照上文
+      - ./Download2:/downloads2
+      - ./Download3:/downloads3          #同上
+    ports:
+      - 8085:8085  # 同上面Web UI端口一致
+      - 26881:26881
+      - 26881:26881/udp
+    restart: unless-stopped

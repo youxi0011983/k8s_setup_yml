@@ -6,7 +6,7 @@ services:
     container_name: mysql
     command: [ "--max_connections=1000" ]
     ports:
-      - "3306:3306"
+      - "3307:3306"
     security_opt:
       - seccomp:unconfined
     volumes:
@@ -16,7 +16,7 @@ services:
       - ./mysql/log:/var/log/mysql
       - ./mysql/mysql-files:/var/lib/mysql-files
     environment:
-       - MYSQL_ROOT_PASSWORD=password
+       - MYSQL_ROOT_PASSWORD=123456
        - MYSQL_ALLOW_EMPTY_PASSWORD=no
        - MYSQL_USER=yourname
        - MYSQL_PASS=password
