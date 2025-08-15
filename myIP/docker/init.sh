@@ -1,0 +1,1 @@
+docker run -d -p 18966:18966 --name myip --restart always jason5ng32/myip:latest

@@ -1,0 +1,10 @@
+version: '3'
+services:
+  myip:
+    container_name: myip
+    ports:
+      - 18966:18966
+#    volumes:
+#      - ./data/dashmachine/data:/dashmachine/dashmachine/user_data
+    restart: always
+    image: jason5ng32/myip:latest
