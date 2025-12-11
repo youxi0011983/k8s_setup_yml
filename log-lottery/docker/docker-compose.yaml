@@ -1,0 +1,13 @@
+services:
+ lottery:
+     image: fooololo/log-lottery:latest
+     container_name: lottery
+     restart: unless-stopped
+     network_mode: bridge
+     ports:
+         - "6719:6719"
+     logging:
+         driver: "json-file"
+         options:
+             max-size: "5m"
+             max-file: "3"
