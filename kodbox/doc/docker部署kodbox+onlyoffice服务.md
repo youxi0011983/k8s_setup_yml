@@ -21,10 +21,10 @@ EOF
 
 ```bash
 #新建docker-compose.yaml文件
-touch docker-compose.yaml
+touch docker-compose.yaml.yaml
 
-# docker-compose.yaml文件内容
-cat > docker-compose.yaml <<EOF
+# docker-compose.yaml.yaml文件内容
+cat > docker-compose.yaml.yaml <<EOF
 version: '3.0'
 services:
   kodcloud:
@@ -747,10 +747,10 @@ openssl x509 -req -in nginx.csr -signkey nginx.key -out nginx.pem
 
 ```bash
 #进入项目目录，执行docker-compose 启动命令，会自动拉取容器并运行
-$ docker-compose up -d
+$ docker-compose.yaml up -d
 
 #如果需要停止服务
-$ docker-compose down
+$ docker-compose.yaml down
 ```
 
 

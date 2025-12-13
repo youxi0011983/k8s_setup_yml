@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+    rustfs:
+        command: /data
+        image: 'rustfs/rustfs:latest'
+        volumes:
+            - './data:/data'
+        ports:
+            - '9001:9001'
+            - '9000:9000'
+        container_name: rustfs_local
+        environment:
+            - 'RUSTFS_ROOT_USER=rustfsadmin'
+            - 'RUSTFS_ROOT_PASSWORD=rustfsadmin'

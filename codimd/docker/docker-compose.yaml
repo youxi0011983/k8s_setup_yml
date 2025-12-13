@@ -13,7 +13,7 @@ services:
     # you can use image or custom build below,
     image: nabo.codimd.dev/hackmdio/hackmd:2.5.3
     # Using the following command to trigger the build
-    # docker-compose -f deployments/docker-compose.yml up --build
+    # docker-compose.yaml -f deployments/docker-compose.yaml.yml up --build
     # build:
     #   context: ..
     #   dockerfile: ./deployments/Dockerfile

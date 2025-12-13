@@ -1,5 +1,5 @@
 #
-# WARNING: Make sure to use the docker-compose.yml of the current release:
+# WARNING: Make sure to use the docker-compose.yaml.yml of the current release:
 #
 # https://github.com/immich-app/immich/releases/latest/download/docker-compose.yml
 #
